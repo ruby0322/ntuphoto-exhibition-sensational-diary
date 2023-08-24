@@ -1,4 +1,4 @@
-import { Avatar } from "antd";
+import { Avatar } from "@mui/material";
 
 const HeaderStyle = {
     // paddingLeft: '10px',
