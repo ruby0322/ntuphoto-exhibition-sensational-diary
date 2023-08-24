@@ -60,13 +60,14 @@ const theme = createTheme({
       fontWeight: '800',
     },
     遮罩大字: {
+      fontFamily: 'Zen Maru Gothic, sans-serif',
       color: 'white',
       fontSize: '4rem',
       fontWeight: '800',
     },  
     遮罩小字: {
       color: 'white',
-      fontSize: '1.5rem',
+      fontSize: '1.2rem',
       fontWeight: '800',
     },  
   },
