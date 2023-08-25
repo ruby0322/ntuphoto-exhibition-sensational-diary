@@ -223,7 +223,7 @@ body {
 
 .welcome-button {
   animation-name: welcome-button;
-  animation-duration: 1s;
+  animation-duration: .8s;
   animation-iteration-count: infinite;
   top: 74.3%;
   left: 4%;
