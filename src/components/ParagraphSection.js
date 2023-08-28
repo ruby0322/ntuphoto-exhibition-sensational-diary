@@ -1,4 +1,5 @@
 import { Typography } from '@mui/material';
+import React from 'react';
 
 const ParagraphStyle = {
     display: 'flex',
@@ -27,8 +28,6 @@ const calculateColumnCount = (lineCount, linesPerColumn) => {
 const ParagraphSection = ({ subtitle, lines, linesPerColumn }) => {
 
     const columnCount = calculateColumnCount(lines.length, linesPerColumn);
-    console.log(lines)
-    console.log(columnCount)
 
     return <div style={ParagraphStyle}>
         <Typography variant='頁尾標題' style={SubtitleStyle}>
@@ -37,12 +36,12 @@ const ParagraphSection = ({ subtitle, lines, linesPerColumn }) => {
         <div style={BodyGroupStyle}>
             {
                 (new Array(columnCount).fill(1)).map((_, col) => {
-                    return <Typography variant='頁尾內文'>
+                    return <Typography key={`ps-col${col}`} variant='頁尾內文'>
                         {
                             (new Array(linesPerColumn).fill(1)).map((__, row) => {
-                                return <>
+                                return <React.Fragment key={`ps-col${col}-row${row}`}>
                                     {lines[col * linesPerColumn + row]}<br />
-                                </>;
+                                </React.Fragment>;
                             })
                         }
                     </Typography>;

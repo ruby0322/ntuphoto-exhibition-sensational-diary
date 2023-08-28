@@ -32,7 +32,8 @@ const LockMask = () => {
     };
     
     useEffect(() => {
-        return () => setInterval(updateOpen, 1000);
+        const updateOpenId = setInterval(updateOpen, 1000);
+        return () => clearInterval(updateOpenId);
     }, []);
 
     return <Backdrop

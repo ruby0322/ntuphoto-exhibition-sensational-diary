@@ -138,7 +138,7 @@ const Footer = () => {
                 <ParagraphSection
                     linesPerColumn={2}
                     subtitle='特別感謝'
-                    lines={['楊鎮豪', '彭崧瑋']}
+                    lines={['楊鎮豪', '彭菘瑋']}
                 />
                 <ParagraphSection
                     linesPerColumn={4}
