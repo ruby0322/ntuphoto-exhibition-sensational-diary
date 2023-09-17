@@ -1,60 +1,142 @@
-import '@fontsource/noto-serif-tc';
-import { Typography } from '@mui/material';
-import ImageListPreview from '../components/ImageListPreview';
-import Profile from '../components/Profile';
-import WorkSubtitle from '../components/WorkSubtitle';
+import "@fontsource/noto-serif-tc";
+import { Typography } from "@mui/material";
+import { useParams } from "react-router-dom";
+import ImageListPreview from "../components/ImageListPreview";
+import Profile from "../components/Profile";
+import WorkSubtitle from "../components/WorkSubtitle";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
+
+const concepts = {
+  葉書碩: `我們想殺死的，只是那份悲傷。`,
+  林祐群: `我的一天是從一杯咖啡開始的。透過調製咖啡的儀式，咖啡的香氣，冷熱的觸感，以及口感讓我準備好面對一天的挑戰。`,
+  林玟伶: `一面在影像中的牆只是一層表面，又或者能因影像之特性而擴增其厚度？`,
+  U0: `遙遠的距離迫使對話遷徙至網路聊天室中，而非同步性於此恣意蔓延。這樣的斷裂和失真的盡頭會是什麼呢？`,
+  李建霖: `在蘭嶼的海岸線發呆`,
+  許哲睿: `排版靈感取自郭德堡變奏曲，透過相似符號論調個人生命經驗，並在每組照片中安插一個意象或是故事。`,
+  徐振瑜: `森林中，五感與靈性交融。
+    嘗試把意識遁入周遭，與身旁一草一木共用各式感官。
+    `,
+  林繼堽: `分享之前拍過的貓咪照片，帶給大家快樂`,
+  石瑛: `本件作品以理想中殯葬方式為創作起點，試圖描繪一個在海與陽光中平靜的死亡意象。`,
+};
+const descriptions = {
+  葉書碩: `大家好，我是《semicolon》的作者葉書碩。這個作品的緣起要從一間餐酒館說起。
+    
+    某個週日的傍晚，與朋友爬完山後回到了住家附近的餐酒館聚餐。人來人往的店內，我看見一位店員的雙手手臂都是美工刀的割痕，整齊地像條碼一字排開，傷口的邊緣還有些許的泛紅，這應該是不久前發生的事。
+    
+    這讓我想起一位很好的朋友曾經向我透露，在高中時也會這樣傷害自己，而她會這樣跟我說，正是因為知道我也這樣傷害自己。
+    
+    我們很難一直都知道自己在想什麼，所有動作背後的真實動機都不只有一個，特別是在承受壓力的狀況下，我們更容易脫離常軌。在曾經的一段感情中，我失去了平衡，將一切的需要與希望都寄託在他人身上，而一切被強制抽離的痛苦讓我不得不尋找出口，做了那樣的選擇。
+    
+    在作品中用了三種不同材質的紙說著不同的故事。貼在盒子上的幾張紙，大家會先看到自縊的畫面，打開盒子後會發現其實有人正在阻止一切的發生。中間有許多關於那段失去平衡期間拍下的照片與故事。最後是一本小冊，火柴點亮了又熄滅，點亮了又熄滅，就像生命的開始與結束。
+    
+    我還是一直惦記著那位店員，當時很想關心她，但我知道關心與被關心都是需要勇氣的，所以我希望透過這樣的作品作為邀請卡，去讓她知道她並不是孤單的。也希望可以將這份作品作為長期攝影計畫的開端，去幫助其他人找到合適的出口。`,
+  林玟伶: `10秒、20秒、30秒...；0cm、0.5m、1cm...作品透過暗房實驗，將同一張照片重複放相，因時間差異造成的明暗不均、移動的物理空間所造成的影像間隙與模糊，使留下時空痕跡之影像得以被意識到。
+
+    重新將照片放回那面牆之後，它們各自所經歷的，與牆面因於物理時空下所產生的痕跡形成差距，影像出自於牆面而後獨立於牆面，兩者在當下出現新的關係。`,
+  U0: `這本書算是一個創作計畫的呈現，主要是許多朋友們因為讀書、工作等原因四散世界各地，巨大的時差使我們在聊天的過程時常會有很大的延遲。而網路聊天室的特性有時候也讓我們對話的順序也變得破碎和混亂(比如有時候我依順序問了ABC三個問題，但對方回覆可能會是CBA的順序)，此外無法用手勢、表情等視覺資訊輔助的情況下，文字的失真也比面對面溝通更加明顯。
+    在過去幾次因為文字的失真而遇到各種好笑或好氣的事情後，再次面對它時反而開始好奇這種斷裂的極致會是甚麼樣子，因此和奕愷約好以一個月的時間，彼此只用照片在一個獨立的網路聊天室對話，最後將這些照片分別裝訂成一本書並陳給觀眾們，讓觀眾們可以自行猜測、安排我們的對話，進一步擴大失真。
+    在裝幀上，我刻意讓兩本子書以經摺裝的方式去保留網路聊天室中對話"串"的特性，觀眾也可以完全拉開這七十幾頁的影像，去感受那一整個月的照片語言。`,
+  李建霖: `我七月中的時候一個人到蘭嶼旅行，旅途中經常在海岸線、堤防上、沙灘上發呆，這張照片就是我在蘭嶼的某個海邊角落拍下的，希望大家在看這張照片的時候可以看到蘭嶼的海，跟我一起發呆`,
+  許哲睿: `排版靈感取自郭德堡變奏曲，透過相似符號論調個人生命經驗，並在每組照片中安插一個意象或是故事。背景的歌曲就是郭德堡變奏曲，有興趣的人請上我們的網站，我有把標題放在那。 YouTube搜尋：Bach - Aria mit 30 Veränderungen 'Goldberg Variations' BWV 988 - Rondeau | Netherlands Bach Society
+
+    回來談本次作品，大交集下作品的意義似乎就變得非常個人化、破碎化，所以大家可以試著用自己的想法去解讀，每組照片、每頁之間究竟在述說什麼故事，正確與否不重要，對正在看的你而言有趣、有意義便足以～自攝影開始就深受川內倫子影響，但我對於具體想指稱的事物還不夠清晰，對於人生體悟想得還不夠透徹。
+    
+    我的拍照風格屬於街拍類，沒有特別關注在什麼領域，拍下照片、回家整理，拍的照片像是素材，而創作主要發生的場所則在LR、PS中。
+    
+    漫無目的的隨手拍，也許是年輕的優勢。我對藝術有興趣，但沒有特別的想法，所以透過大量拍攝與歸納，瞥見了那個時期自我腦袋的運作方式，風格在每次煉化中稍稍成形。
+    
+    近期開始上比較專門的攝影課，也想透過小說、宗教去創建我的系列作品。
+    `,
+  徐振瑜: `為了躲避平地酷暑，暑假跑了台灣好幾處的山中。
+    台灣的森林遊樂區多是伐木時代遺留下來的基地，通常座落在中海拔霧林帶之中，高度大約落在2000公尺上下，依照每100公尺下降0.6攝氏度的方式計算，夏季溫度是舒適且怡人的。
+    很喜歡走在神木林之中的感覺，空氣冷冽微濕、帶有一點點檜木香味，安靜帶有一點神秘氣息，眼見雲霧流動之間，巨木巍峨莊嚴，而身旁小草散發出濃濃生機。
+    我嘗試把自己的感官放逐，讓它們自由散佈四周，在巨木樹皮中的隙縫內、在張牙舞爪的枝椏中、在自由流動的霧靄裡，似與天地合而為一。`,
+  林繼堽: `分享之前拍過的貓咪照片，帶給大家快樂`,
+  石瑛: `這次作品的創作初衷是我在思考想要以什麼樣的方式殯葬，以什麼樣的姿態和世界告別。可能因為那陣子很喜歡海，所以在腦海裡描繪了一個仰躺在海面，被水輕輕簇擁，傍晚時分陽光撒下來的畫面，這也就成為了這次作品的起點。後來到安寧病房做服務學習，看到了雖然生命末期生理上的支離破碎，但似乎心理上我們是可以嘗試追求一個平靜安詳，甚至某種程度上，溫暖的死亡，所以這也成為這件作品想要傳達給大家的感受。而向日葵，作為死亡的主體，會在展期中慢慢凋零，呈現正在進行式的、單向的、不可挽回的動態變化。也希望大家除了用眼睛觀看這件作品，還能用手輕輕觸摸，感受海面底下的湧動。`,
+};
+
+const counts = {
+  葉書碩: 3,
+  林玟伶: 7,
+  李建霖: 1,
+  林祐群: 3,
+  林繼堽: 1,
+  石瑛: 2,
+  U0: 4,
+  許哲睿: 12,
+  徐振瑜: 5,
+  簡廷翰: 4,
+};
 
 const Work = () => {
+  const { name } = useParams();
 
-    return <div className='paper-container'>
-        <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            width: '50rem',
-            minHeight: '92vh',
-            marginTop: '2rem',
-            marginBottom: '3rem',
-            gap: '1.2rem',
-        }}>
-            <WorkSubtitle content='語音導覽' /> 
-            <audio style={{
-                width: '100%',
-            }} controls src="https://cdn.discordapp.com/attachments/893439505988743178/1143828698043273237/National_Taiwan_University_4.m4a">
-                <a href="https://cdn.discordapp.com/attachments/893439505988743178/1143828698043273237/National_Taiwan_University_4.m4a"> Download audio </a>
-            </audio>
-            <ImageListPreview />
-            <WorkSubtitle content='創作理念' /> 
-            <Typography variant='作品理念內文' sx={{
-                textAlign: 'justify',
-                paddingLeft: '1rem',
-                paddingRight: '0.3rem',
-                // textAlign: 'justify',
-            }}>
-                本屆藝術季《洄 Reviver》以「永續」為核心，除了環境面的永續之外，亦以藝術的形式探索時間面的永續。於你而言，「過去與未來」、「生存與死亡」、「瞬間與不朽」是無法改變的事實，抑或是可以被重新定義的概念呢？
+  return (
+    <div className="paper-container">
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          width: "50rem",
+          minHeight: "92vh",
+          marginTop: "2rem",
+          marginBottom: "3rem",
+          gap: "1.2rem",
+        }}
+      >
+        <WorkSubtitle content="語音導覽" />
+        <audio
+          style={{
+            width: "100%",
+          }}
+          controls
+          src="https://cdn.discordapp.com/attachments/893439505988743178/1143828698043273237/National_Taiwan_University_4.m4a"
+        >
+          <a href="https://cdn.discordapp.com/attachments/893439505988743178/1143828698043273237/National_Taiwan_University_4.m4a">
+            {" "}
+            Download audio{" "}
+          </a>
+        </audio>
+        <ImageListPreview name={name} count={counts[name]} />
+        <WorkSubtitle content="作品理念" />
+        <Typography
+          variant="作品理念內文"
+          sx={{
+            textAlign: "justify",
+            paddingLeft: "1rem",
+            paddingRight: "0.3rem",
+          }}
+        >
+          {concepts[name]}
+        </Typography>
+        {descriptions[name] ? (
+          <>
+            <WorkSubtitle content="創作理念" />
+            <Typography
+              variant="作品理念內文"
+              sx={{
+                marginLeft: "1rem",
+                paddingRight: "0.3rem",
+              }}
+            >
+              {descriptions[name].split("\n").map((para, index) => (
+                <p key={`description-${name}-${index}`}> {para} </p>
+              ))}
             </Typography>
-            <WorkSubtitle content='創作自述' /> 
-            <Typography variant='作品理念內文' sx={{
-                marginLeft: '1rem',
-                paddingRight: '0.3rem',
-                // paddingLeft: '1rem',
-                // borderLeft: 'solid #C4C4C1 10px',
-            }}>
-                本屆藝術季《洄 Reviver》以「永續」為核心，除了環境面的永續之外，亦以藝術的形式探索時間面的永續。於你而言，「過去與未來」、「生存與死亡」、「瞬間與不朽」是無法改變的事實，抑或是可以被重新定義的概念呢？
-
-                <br />
-                <br />
-
-                在漫長的時間軸上，我們究竟是穿梭於不同時空的靈魂，還是被時間束縛與禁錮的區區個體？洄將「永續」分為四個階段：毀滅與混沌、動盪與追尋、時間與回溯、未來與重生， 讓大家透過藝術展覽與實作活動，探索自我與「永續」的關係。
-                
-                <br />
-                <br />
-                願在當中的某個瞬間，你會找「洄」自己。
-            </Typography>
-
-            <Profile />
-        </div>
-    </div>;
-}
+          </>
+        ) : (
+          <></>
+        )}
+        <Profile name={name} />
+      </div>
+    </div>
+  );
+};
 
 export default Work;

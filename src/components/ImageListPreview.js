@@ -1,76 +1,74 @@
-import { ImageList, ImageListItem } from '@mui/material';
+import { ImageList, ImageListItem } from "@mui/material";
+import { useCallback, useState } from "react";
+import ImageViewer from "react-simple-image-viewer";
 
-const itemData = [
-    {
-        img: 'https://images.unsplash.com/photo-1549388604-817d15aa0110',
-        title: 'Bed',
-    },
-    {
-        img: 'https://images.unsplash.com/photo-1563298723-dcfebaa392e3',
-        title: 'Kitchen',
-    },
-    {
-        img: 'https://images.unsplash.com/photo-1523413651479-597eb2da0ad6',
-        title: 'Sink',
-    },
-    {
-        img: 'https://images.unsplash.com/photo-1525097487452-6278ff080c31',
-        title: 'Books',
-    },
-    {
-        img: 'https://images.unsplash.com/photo-1574180045827-681f8a1a9622',
-        title: 'Chairs',
-    },
-    {
-        img: 'https://images.unsplash.com/photo-1597262975002-c5c3b14bbd62',
-        title: 'Candle',
-    },
-    {
-        img: 'https://images.unsplash.com/photo-1530731141654-5993c3016c77',
-        title: 'Laptop',
-    },
-    {
-        img: 'https://images.unsplash.com/photo-1481277542470-605612bd2d61',
-        title: 'Doors',
-    },
-    {
-        img: 'https://images.unsplash.com/photo-1517487881594-2787fef5ebf7',
-        title: 'Coffee',
-    },
-    {
-        img: 'https://images.unsplash.com/photo-1516455207990-7a41ce80f7ee',
-        title: 'Storage',
-    },
-    {
-        img: 'https://images.unsplash.com/photo-1519710164239-da123dc03ef4',
-        title: 'Coffee table',
-    },
-    {
-        img: 'https://images.unsplash.com/photo-1588436706487-9d55d73a39e3',
-        title: 'Blinds',
-    },
-];
+const ImageListItemStyle = {
+  cursor: "zoom-in",
+};
 
-const ImageListPreview = () => {
+const cols = {
+  葉書碩: 1,
+  李建霖: 1,
+  林玟伶: 2,
+  石瑛: 1,
+  徐振瑜: 2,
+  許哲睿: 3,
+  林繼堽: 1,
+};
 
-    return <ImageList sx={{ width: '100%' }} variant="masonry" cols={3} gap={8}>
-        {
-            itemData.map((item) => (
-                <ImageListItem key={item.img}>
-                    {/* <img alt='dawd'> */}
-                    {/* </img> */}
-                        {/* <Image> */}
-                            <img
-                                src={`${item.img}?w=161&fit=crop&auto=format`}
-                                srcSet={`${item.img}?w=161&fit=crop&auto=format&dpr=2 2x`}
-                                alt={item.title}
-                                loading="lazy"
-                            />
-                        {/* </Image> */}
-                </ImageListItem>
-            ))
-        }
-  </ImageList>;
-}
+const ImageListPreview = ({ name, count }) => {
+  const [currentImage, setCurrentImage] = useState(0);
+  const [isViewerOpen, setIsViewerOpen] = useState(false);
+
+  const images = new Array(count)
+    .fill(0)
+    .map((_, index) => `/images/works/${name}/${index}.jpg`);
+
+  const openImageViewer = useCallback((index) => {
+    setCurrentImage(index);
+    setIsViewerOpen(true);
+  }, []);
+
+  const closeImageViewer = () => {
+    setCurrentImage(0);
+    setIsViewerOpen(false);
+  };
+
+  return (
+    <ImageList
+      sx={{ width: "100%" }}
+      variant="quilted"
+      cols={cols[name]}
+      gap={8}
+    >
+      {new Array(count).fill(0).map((_, index) => (
+        <ImageListItem
+          style={ImageListItemStyle}
+          key={`${name}-work-${index}`}
+          onClick={() => openImageViewer(index)}
+        >
+          <img
+            src={`/images/works/${name}/${index}.jpg?w=161&fit=crop&auto=format`}
+            srcSet={`/images/works/${name}/${index}.jpg?w=161&fit=crop&auto=format&dpr=2 2x`}
+            alt={`${name}-work-${index}`}
+            loading="lazy"
+          />
+        </ImageListItem>
+      ))}
+      {isViewerOpen && (
+        <ImageViewer
+          src={images}
+          currentIndex={currentImage}
+          onClose={closeImageViewer}
+          disableScroll={false}
+          backgroundStyle={{
+            backgroundColor: "--var(primary-bg) !important",
+          }}
+          closeOnClickOutside={true}
+        />
+      )}
+    </ImageList>
+  );
+};
 
 export default ImageListPreview;
